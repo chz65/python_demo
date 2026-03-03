@@ -62,8 +62,7 @@ async def run(task):
 		input = t['input']
 		id = input['id']
 		name = input['name']
-		base = input['BASE']
-		expression = input['expression']
+		base = input['base']
 		ondate = input['ondate']
 		
   		# Get the process details		
