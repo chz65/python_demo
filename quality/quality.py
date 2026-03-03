@@ -2,11 +2,12 @@ from dotenv import load_dotenv
 import asyncio
 import os
 import sys
+import json
 from odsl import process
 from odsl import sdk
 from odsl import types
 from datetime import date
-from datetime import datetime
+import datetime
 
 load_dotenv()
 
@@ -40,7 +41,7 @@ async def run(task):
 				dataset = odsl.get('dataset', 'delivery', dsid + ":" + ondate)
 				od = date.fromisoformat(ondate)
 				odt = od + datetime.timedelta(days=1)
-				range={'$gte':start, '$lt':end}    
+				range={'$gte':od.isoformat(), '$lt':odt.isoformat()}    
 				filter="{'event':'" + event + "','eventstart':" + json.dumps(range) + "}"
 				await odsl_process.logMessage("Getting events " + dsid + " for " + range)
 				events = odsl.list('event', 'private', {'_filter':filter,'_limit':-1})
