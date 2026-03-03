@@ -20,10 +20,11 @@ def timespread(input_curve):
         A curve containing spreads between consecutive contracts
     """
     # Create a new curve to store the spread values
-    spread = types.Curve(input_curve.ondate)
+    ondate = input_curve['ondate']
+    spread = types.Curve(ondate['curveDate'], ondate['expiryCalendar'])
     
     # Get all contracts from the bootstrapped curve
-    contracts = input_curve.contracts
+    contracts = input_curve['contracts']
     
     # Get the total number of contracts
     contract_size = len(contracts)
@@ -75,8 +76,11 @@ async def run(task):
 			await odsl_process.startProcess()
    
 			# Get the base curve
+			await odsl_process.startPhase("INIT")
+			await odsl_process.logMessage("Getting base curve " + base + ":" + ondate)
 			base_curve = odsl.get('data', 'private', base + ":" + ondate)
 			print(base_curve)
+			await odsl_process.endPhase("success", "Initialised Successfully")
 
 			# Create the object to update
 			await odsl_process.startPhase("BUILD")
