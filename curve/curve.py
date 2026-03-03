@@ -74,22 +74,26 @@ async def run(task):
 			# Create the process message
 			odsl_process = process.TASK(p, t)
 			await odsl_process.startProcess()
-   
-			# Get the base curve
-			await odsl_process.startPhase("INIT")
-			await odsl_process.logMessage("Getting base curve " + base + ":" + ondate)
-			base_curve = odsl.get('data', 'private', base + ":" + ondate)
-			print(base_curve)
-			await odsl_process.endPhase("success", "Initialised Successfully")
+			
+			try:
+				# Get the base curve
+				await odsl_process.startPhase("INIT")
+				await odsl_process.logMessage("Getting base curve " + base + ":" + ondate)
+				base_curve = odsl.get('data', 'private', base + ":" + ondate)
+				print(base_curve)
+				await odsl_process.endPhase("success", "Initialised Successfully")
 
-			# Create the object to update
-			await odsl_process.startPhase("BUILD")
-			await odsl_process.logMessage("Building " + id + ":" + name)
-			obj = {'_id': id}
-			obj['name'] = timespread(base_curve).data
-			odsl.update('object', 'private', obj)
-			await odsl_process.endPhase("success", "Updating Successfully")
-			await odsl_process.endProcess("success", "Completed Successfully")
+				# Create the object to update
+				await odsl_process.startPhase("BUILD")
+				await odsl_process.logMessage("Building " + id + ":" + name)
+				obj = {'_id': id}
+				obj['name'] = timespread(base_curve).data
+				odsl.update('object', 'private', obj)
+				await odsl_process.endPhase("success", "Updating Successfully")
+				await odsl_process.endProcess("success", "Completed Successfully")
+			except Exception as e:
+				await odsl_process.endProcess("failed", e)
+
 
 task = sys.argv[1]
 print("Running Process Task: " + task)
