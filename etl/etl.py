@@ -63,7 +63,7 @@ async def run(task):
 				]
 			}
 			await odsl_process.logMessage(datetime.datetime.now().isoformat() + " info Updating " + obj['_id'])
-			odsl.update('object', 'private', obj, {'_reason':t['name']})
+			odsl.update('object', 'private', obj, {'_origin':t['name']})
 			await odsl_process.endPhase("success", "Updating Successfully")
 			await odsl_process.endProcess("success", "Completed Successfully")
 

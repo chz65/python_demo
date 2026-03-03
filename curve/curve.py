@@ -88,7 +88,7 @@ async def run(task):
 				obj = {'_id': objid}
 				obj[name] = timespread(base_curve).data
 				print("Updating Object: " + repr(obj))
-				odsl.update('object', 'private', obj)
+				odsl.update('object', 'private', obj, {'_origin':t['name']})
 				await odsl_process.endPhase("success", "Updating Successfully")
 				await odsl_process.endProcess("success", "Completed Successfully")
 			except Exception as e:
