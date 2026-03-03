@@ -88,6 +88,7 @@ async def run(task):
 				await odsl_process.logMessage("Building " + id + ":" + name)
 				obj = {'_id': id}
 				obj['name'] = timespread(base_curve).data
+				print("Updating Object: " + obj)
 				odsl.update('object', 'private', obj)
 				await odsl_process.endPhase("success", "Updating Successfully")
 				await odsl_process.endProcess("success", "Completed Successfully")
