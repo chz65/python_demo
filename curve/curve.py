@@ -1,34 +1,53 @@
+from dotenv import load_dotenv
+import asyncio
+import os
+import sys
+from odsl import process
 from odsl import sdk
-import random
+from odsl import types
 
-odsl = sdk.ODSL()
-odsl.setStage("dev")
-odsl.loginWithAPIKey('colin.hartley@opendatadsl.com', '6107d060fa02b20dbc442316')
+load_dotenv()
 
-obj = {
-	'_id': 'AAA.PYTHON',
-	'CURVE':{
-			'_id': 'CURVE',
-			'_type': 'VarCurve',
-			'ondate': {'curveDate':'2026-03-02', 'expiryCalendar':'#REOMB'},
-			'contracts': [
-				{'tenor': 'M01', 'value': random.randrange(1, 100)},
-				{'tenor': 'M02', 'value': random.randrange(1, 100)},
-				{'tenor': 'M03', 'value': random.randrange(1, 100)},
-				{'tenor': 'M04', 'value': random.randrange(1, 100)},
-				{'tenor': 'M05', 'value': random.randrange(1, 100)},
-				{'tenor': 'M06', 'value': random.randrange(1, 100)},
-				{'tenor': 'M07', 'value': random.randrange(1, 100)},
-				{'tenor': 'M08', 'value': random.randrange(1, 100)},
-				{'tenor': 'M09', 'value': random.randrange(1, 100)},
-				{'tenor': 'M10', 'value': random.randrange(1, 100)},
-				{'tenor': 'M11', 'value': random.randrange(1, 100)},
-				{'tenor': 'M12', 'value': random.randrange(1, 100)}
-			]
-		}
-}
+async def run(task):
+	odsl = sdk.ODSL()
+	odsl.setStage(os.getenv('ODSL_STAGE'))
+	user=os.getenv('user')
+	apikey=os.getenv('apikey')
+	odsl.loginWithAPIKey(user, apikey)
+    # Get the task details
+	t = odsl.get('process-task', None, task)
+	print(t)
+	if t is not None:
+		input = t['input']
+		id = input['id']
+		name = input['name']
+		base = input['BASE']
+		expression = input['expression']
+		
+  		# Get the process details		
+		p = odsl.get('process', None, t['name'])
+		if p is not None:
+			print(p)
+   
+			# Create the process message
+			odsl_process = process.TASK(p, t)
+			await odsl_process.startProcess()
 
-odsl.update('object', 'private', obj)
+			# Create the object to update
+			await odsl_process.startPhase("BUILD")
+			await odsl_process.logMessage("Building " + id + ":" + name)
+			obj = {'_id': id}
+			obj['name'] = timespread(base)
+			odsl.update('object', 'private', obj)
+			await odsl_process.endPhase("success", "Updating Successfully")
+			await odsl_process.endProcess("success", "Completed Successfully")
+
+task = sys.argv[1]
+print("Running Process Task: " + task)
+asyncio.run(run(task))
+print("Finished Process Task")
+print("-----------------------")
+
 
 def timespread(input_curve):
     """
@@ -42,7 +61,7 @@ def timespread(input_curve):
         A curve containing spreads between consecutive contracts
     """
     # Create a new curve to store the spread values
-    spread = Curve(input_curve.ondate)
+    spread = types.Curve(input_curve.ondate)
     
     # Get all contracts from the bootstrapped curve
     contracts = input_curve.contracts
