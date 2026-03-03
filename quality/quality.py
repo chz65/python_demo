@@ -5,6 +5,8 @@ import sys
 from odsl import process
 from odsl import sdk
 from odsl import types
+from datetime import date
+from datetime import datetime
 
 load_dotenv()
 
@@ -28,7 +30,39 @@ async def run(task):
 			await odsl_process.startProcess()
 			
 			try:
+				# Get the base curve
+				await odsl_process.startPhase("INIT")
 				input = t['input']
+				dsid = input['dsid']    
+				ondate = input['ondate']
+				# Get the dataset delivery
+				await odsl_process.logMessage("Getting dataset delivery " + dsid + ":" + ondate)
+				dataset = odsl.get('dataset', 'delivery', dsid + ":" + ondate)
+				od = date.fromisoformat(ondate)
+				odt = od + datetime.timedelta(days=1)
+				range={'$gte':start, '$lt':end}    
+				filter="{'event':'" + event + "','eventstart':" + json.dumps(range) + "}"
+				await odsl_process.logMessage("Getting events " + dsid + " for " + range)
+				events = odsl.list('event', 'private', {'_filter':filter,'_limit':-1})
+				await odsl_process.logMessage("Got " + len(events) + " events")
+				await odsl_process.endPhase("success", "Initialised Successfully")
+
+				# Check the events
+				await odsl_process.startPhase("CHECK")
+				valid = True
+				for event in events:
+					if event['price'] < 10:
+						valid = False
+				await odsl_process.logMessage("Check complete, valid="+valid)
+				await odsl_process.logMessage("Updating dataset delivery")
+				if valid:
+					dataset['qualityStatus'] = 'valid'
+				else:
+					dataset['qualityStatus'] = 'failed'
+				odsl.update('dataset', 'delivery', dataset)
+
+				await odsl_process.endPhase("success", "Checked Successfully")
+
 				await odsl_process.endProcess("success", "Completed Successfully")
 			except Exception as e:
 				await odsl_process.endProcess("failed", repr(e))
