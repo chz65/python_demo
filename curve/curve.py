@@ -88,12 +88,12 @@ async def run(task):
 				await odsl_process.logMessage("Building " + id + ":" + name)
 				obj = {'_id': id}
 				obj['name'] = timespread(base_curve).data
-				print("Updating Object: " + obj)
+				print("Updating Object: " + repr(obj))
 				odsl.update('object', 'private', obj)
 				await odsl_process.endPhase("success", "Updating Successfully")
 				await odsl_process.endProcess("success", "Completed Successfully")
 			except Exception as e:
-				await odsl_process.endProcess("failed", e)
+				await odsl_process.endProcess("failed", repr(e))
 
 
 task = sys.argv[1]
