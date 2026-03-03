@@ -63,6 +63,7 @@ async def run(task):
 		name = input['name']
 		base = input['BASE']
 		expression = input['expression']
+		ondate = input['ondate']
 		
   		# Get the process details		
 		p = odsl.get('process', None, t['name'])
@@ -72,12 +73,16 @@ async def run(task):
 			# Create the process message
 			odsl_process = process.TASK(p, t)
 			await odsl_process.startProcess()
+   
+			# Get the base curve
+			base_curve = odsl.get('data', 'private', base + ":" + ondate)
+			print(base_curve)
 
 			# Create the object to update
 			await odsl_process.startPhase("BUILD")
 			await odsl_process.logMessage("Building " + id + ":" + name)
 			obj = {'_id': id}
-			obj['name'] = timespread(base)
+			obj['name'] = timespread(base_curve)
 			odsl.update('object', 'private', obj)
 			await odsl_process.endPhase("success", "Updating Successfully")
 			await odsl_process.endProcess("success", "Completed Successfully")
