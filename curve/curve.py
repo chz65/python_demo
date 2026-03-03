@@ -5,6 +5,7 @@ import sys
 from odsl import process
 from odsl import sdk
 from odsl import types
+import datetime
 
 load_dotenv()
 
@@ -76,14 +77,14 @@ async def run(task):
 				ondate = input['ondate']
 				# Get the base curve
 				await odsl_process.startPhase("INIT")
-				await odsl_process.logMessage("Getting base curve " + base + ":" + ondate)
+				await odsl_process.logMessage(datetime.datetime.now().isoformat() + " info Getting base curve " + base + ":" + ondate)
 				base_curve = odsl.get('data', 'private', base + ":" + ondate)
 				print(base_curve)
 				await odsl_process.endPhase("success", "Initialised Successfully")
 
 				# Create the object to update
 				await odsl_process.startPhase("BUILD")
-				await odsl_process.logMessage("Building " + objid + ":" + name)
+				await odsl_process.logMessage(datetime.datetime.now().isoformat() + " info Building " + objid + ":" + name)
 				obj = {'_id': objid}
 				obj[name] = timespread(base_curve).data
 				print("Updating Object: " + repr(obj))

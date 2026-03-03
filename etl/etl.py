@@ -5,6 +5,7 @@ import sys
 from odsl import process
 from odsl import sdk
 import random
+import datetime
 
 load_dotenv()
 
@@ -61,7 +62,7 @@ async def run(task):
 					}
 				]
 			}
-			await odsl_process.logMessage("Updating " + obj['_id'])
+			await odsl_process.logMessage(datetime.datetime.now().isoformat() + " info Updating " + obj['_id'])
 			odsl.update('object', 'private', obj)
 			await odsl_process.endPhase("success", "Updating Successfully")
 			await odsl_process.endProcess("success", "Completed Successfully")
