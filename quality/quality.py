@@ -38,7 +38,7 @@ async def run(task):
 				ondate = input['ondate']
 				# Get the dataset delivery
 				await odsl_process.logMessage("Getting dataset delivery " + dsid + ":" + ondate)
-				dataset = odsl.get('dataset', 'delivery', dsid + ":" + ondate)
+				dataset = odsl.get('dataset_delivery', 'private', dsid + ":" + ondate)
 				od = date.fromisoformat(ondate)
 				odt = od + datetime.timedelta(days=1)
 				range={'$gte':od.isoformat(), '$lt':odt.isoformat()}    
@@ -60,7 +60,7 @@ async def run(task):
 					dataset['qualityStatus'] = 'valid'
 				else:
 					dataset['qualityStatus'] = 'failed'
-				odsl.update('dataset', 'delivery', dataset)
+				odsl.update('dataset_delivery', 'private', dataset)
 
 				await odsl_process.endPhase("success", "Checked Successfully")
 
