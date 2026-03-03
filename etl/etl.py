@@ -33,10 +33,27 @@ async def run(task):
 				'_id': 'AAA.PYTHON',
 				'EVENTS': [
 					{
-						'_id': 'TEST1',
+						'_id': 'DEMO-2026-03-02-M01',
 						'_type': 'VarEvent',
-						'eventtype': '#Event',
+						'eventtype': 'TraderPrices',
 						'eventtime': '2026-03-02',
+						'tenor': 'M01',
+						'price': random.randrange(1, 100)
+					},
+					{
+						'_id': 'DEMO-2026-03-02-M02',
+						'_type': 'VarEvent',
+						'eventtype': 'TraderPrices',
+						'eventtime': '2026-03-02',
+						'tenor': 'M02',
+						'price': random.randrange(1, 100)
+					},
+					{
+						'_id': 'DEMO-2026-03-02-M03',
+						'_type': 'VarEvent',
+						'eventtype': 'TraderPrices',
+						'eventtime': '2026-03-02',
+						'tenor': 'M03',
 						'price': random.randrange(1, 100)
 					}
 				]
