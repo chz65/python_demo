@@ -35,6 +35,7 @@ async def run(task):
 					{
 						'_id': 'DEMO-2026-03-02-M01',
 						'_type': 'VarEvent',
+						'_dataset':'ODSL.PYTHON.TRADER',
 						'eventtype': 'TraderPrices',
 						'eventtime': '2026-03-02',
 						'tenor': 'M01',
@@ -43,6 +44,7 @@ async def run(task):
 					{
 						'_id': 'DEMO-2026-03-02-M02',
 						'_type': 'VarEvent',
+						'_dataset':'ODSL.PYTHON.TRADER',
 						'eventtype': 'TraderPrices',
 						'eventtime': '2026-03-02',
 						'tenor': 'M02',
@@ -51,6 +53,7 @@ async def run(task):
 					{
 						'_id': 'DEMO-2026-03-02-M03',
 						'_type': 'VarEvent',
+						'_dataset':'ODSL.PYTHON.TRADER',
 						'eventtype': 'TraderPrices',
 						'eventtime': '2026-03-02',
 						'tenor': 'M03',
