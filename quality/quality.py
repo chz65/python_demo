@@ -45,7 +45,7 @@ async def run(task):
 				filter="{'_dsid':'" + dsid + "','eventstart':" + json.dumps(range) + "}"
 				await odsl_process.logMessage("Getting events " + dsid + " for " + json.dumps(range))
 				events = odsl.list('event', 'private', {'_filter':filter,'_limit':-1})
-				await odsl_process.logMessage("Got " + len(events) + " events")
+				await odsl_process.logMessage("Got " + repr(len(events)) + " events")
 				await odsl_process.endPhase("success", "Initialised Successfully")
 
 				# Check the events
@@ -54,7 +54,7 @@ async def run(task):
 				for event in events:
 					if event['price'] < 10:
 						valid = False
-				await odsl_process.logMessage("Check complete, valid="+valid)
+				await odsl_process.logMessage("Check complete, valid=" + repr(valid))
 				await odsl_process.logMessage("Updating dataset delivery")
 				if valid:
 					dataset['qualityStatus'] = 'valid'
