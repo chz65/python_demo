@@ -64,6 +64,7 @@ async def run(task):
 				else:
 					dataset['qualityStatus'] = 'failed'
 					timeline.append("{0} {1} {2} {3} {4}".format(timestamp, 'fatal', t['name'], 'quality', 'Quality Failed'))
+				dataset['timeline'] = timeline
 				odsl.update('dataset_delivery', 'private', dataset)
 
 				await odsl_process.endPhase("success", "Checked Successfully")
