@@ -44,7 +44,7 @@ def timespread(input_curve):
         spread_tenor = f"{previous['tenor']}-{current['tenor']}"
         
         # Add the spread contract to the curve
-        spread.addContract(spread_tenor, spread_value)
+        spread.add(spread_tenor, spread_value)
     
     # Return the spread curve
     return spread
