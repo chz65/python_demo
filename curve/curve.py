@@ -38,13 +38,13 @@ def timespread(input_curve):
         previous = contracts[i - 1]
         
         # Calculate the spread value as the difference between consecutive contracts
-        spread_value = current.value - previous.value
+        spread_value = current['value'] - previous['value']
         
         # Create the spread tenor label (e.g., "M01-M02")
-        spread_tenor = f"{previous.tenor}-{current.tenor}"
+        spread_tenor = f"{previous['tenor']}-{current['tenor']}"
         
         # Add the spread contract to the curve
-        spread.add(spread_tenor, spread_value)
+        spread.addContract(spread_tenor, spread_value)
     
     # Return the spread curve
     return spread
