@@ -43,7 +43,7 @@ async def run(task):
 				odt = od + datetime.timedelta(days=1)
 				range={'$gte':od.isoformat(), '$lt':odt.isoformat()}    
 				filter="{'_dsid':'" + dsid + "','eventstart':" + json.dumps(range) + "}"
-				await odsl_process.logMessage("Getting events " + dsid + " for " + range)
+				await odsl_process.logMessage("Getting events " + dsid + " for " + json.dumps(range))
 				events = odsl.list('event', 'private', {'_filter':filter,'_limit':-1})
 				await odsl_process.logMessage("Got " + len(events) + " events")
 				await odsl_process.endPhase("success", "Initialised Successfully")
