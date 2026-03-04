@@ -5,8 +5,7 @@ import json
 from odsl import process
 from odsl import sdk
 import random
-import datetime
-from datetime import date
+from datetime import datetime
 
 async def run(task):
 	odsl = sdk.ODSL()
