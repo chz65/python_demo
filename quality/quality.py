@@ -32,7 +32,7 @@ async def run(task):
 				# Get the base curve
 				await odsl_process.startPhase("INIT")
 				input = t['input']
-				dsid = input['dsid']    
+				dsid = input['_dsid']    
 				ondate = input['ondate']
 				# Get the dataset delivery
 				await odsl_process.logMessage(datetime.datetime.now().isoformat() + " info Getting dataset delivery " + dsid + ":" + ondate)
