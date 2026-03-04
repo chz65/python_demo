@@ -53,7 +53,7 @@ async def run(task):
 				await odsl_process.startPhase("CHECK")
 				valid = True
 				for event in events:
-					if event['price'] < 10:
+					if float(event['price']) < 10:
 						valid = False
 				await odsl_process.logMessage(datetime.datetime.now().isoformat() + " info Check complete, valid=" + repr(valid))
 				await odsl_process.logMessage(datetime.datetime.now().isoformat() + " info Updating dataset delivery")
