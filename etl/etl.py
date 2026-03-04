@@ -31,6 +31,8 @@ async def run(task):
 			await odsl_process.startPhase("LOAD")
 			dnow = date.today() - datetime.timedelta(days=1)
 			ondate = dnow.isoformat()
+			if 'ondate' in t.input and t.input['ondate']:
+				ondate = t.input['ondate']
 			obj = {
 				'_id': 'AAA.PYTHON',
 				'EVENTS': [
