@@ -5,7 +5,8 @@ import json
 from odsl import process
 from odsl import sdk
 import random
-from datetime import datetime
+import datetime
+from datetime import date
 
 async def run(task):
 	odsl = sdk.ODSL()
@@ -28,7 +29,7 @@ async def run(task):
 			# Create the object to update
 			print("starting phase LOAD")
 			await odsl_process.startPhase("LOAD")
-			dnow = datetime.today() - datetime.timedelta(days=1)
+			dnow = date.today() - datetime.timedelta(days=1)
 			ondate = dnow.isoformat()
 			obj = {
 				'_id': 'AAA.PYTHON',
