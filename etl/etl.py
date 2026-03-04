@@ -29,7 +29,7 @@ async def run(task):
 			# Create the object to update
 			print("starting phase LOAD")
 			await odsl_process.startPhase("LOAD")
-			dnow = date.now() - datetime.timedelta(days=1)
+			dnow = datetime.today() - datetime.timedelta(days=1)
 			ondate = dnow.isoformat()
 			obj = {
 				'_id': 'AAA.PYTHON',
