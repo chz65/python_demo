@@ -8,6 +8,17 @@ import random
 import datetime
 from datetime import date
 
+def addEvent(ondate, tenor):
+    return {
+			'_id': 'DEMO-'+ondate+'-'+tenor,
+			'_type': 'VarEvent',
+			'_dsid':'ODSL.PYTHON.TRADER',
+			'eventtype': 'TraderPrices',
+			'eventtime': ondate,
+			'relative': tenor,
+			'price': random.randrange(1, 100)
+		}
+
 async def run(task):
 	odsl = sdk.ODSL()
 	user='alex.lynch@glencore.co.uk'
@@ -37,36 +48,12 @@ async def run(task):
 				await odsl_process.logMessage(datetime.datetime.now().isoformat() + " info Running ETL for " + ondate)
 				obj = {
 					'_id': 'AAA.PYTHON',
-					'EVENTS': [
-						{
-							'_id': 'DEMO-'+ondate+'-M01',
-							'_type': 'VarEvent',
-							'_dsid':'ODSL.PYTHON.TRADER',
-							'eventtype': 'TraderPrices',
-							'eventtime': ondate,
-							'relative': 'M01',
-							'price': random.randrange(1, 100)
-						},
-						{
-							'_id': 'DEMO-'+ondate+'-M02',
-							'_type': 'VarEvent',
-							'_dsid':'ODSL.PYTHON.TRADER',
-							'eventtype': 'TraderPrices',
-							'eventtime': ondate,
-							'relative': 'M02',
-							'price': random.randrange(1, 100)
-						},
-						{
-							'_id': 'DEMO-'+ondate+'-M03',
-							'_type': 'VarEvent',
-							'_dsid':'ODSL.PYTHON.TRADER',
-							'eventtype': 'TraderPrices',
-							'eventtime': ondate,
-							'relative': 'M03',
-							'price': random.randrange(1, 100)
-						}
-					]
+					'EVENTS': []
 				}
+				tc = int(input['tenors'])
+				for x in range(1, tc+1):
+					tenor = 'M'f"{x:02}"
+					obj['EVENTS'].append(addEvent(ondate, tenor))
 				print("Logging message")
 				await odsl_process.logMessage(datetime.datetime.now().isoformat() + " info Updating " + obj['_id'])
 				print("Updating object")
