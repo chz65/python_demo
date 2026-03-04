@@ -8,3 +8,13 @@ function build_python(id, name, base, exp)
 
 	run DEMO_CB with input
 end
+
+//#region Upload Script
+sudo uk_co_glencore
+
+s = ${script:file/"/src/odsl-projects/glencore/python/curve/curve-build.odsl"}
+s.id = "glencore\python\curve\curve-build"
+save s
+
+
+//#endregion
