@@ -40,7 +40,7 @@ async def run(task):
 						'_dsid':'ODSL.PYTHON.TRADER',
 						'eventtype': 'TraderPrices',
 						'eventtime': ondate,
-						'tenor': 'M01',
+						'relative': 'M01',
 						'price': random.randrange(1, 100)
 					},
 					{
@@ -49,7 +49,7 @@ async def run(task):
 						'_dsid':'ODSL.PYTHON.TRADER',
 						'eventtype': 'TraderPrices',
 						'eventtime': ondate,
-						'tenor': 'M02',
+						'relative': 'M02',
 						'price': random.randrange(1, 100)
 					},
 					{
@@ -58,7 +58,7 @@ async def run(task):
 						'_dsid':'ODSL.PYTHON.TRADER',
 						'eventtype': 'TraderPrices',
 						'eventtime': ondate,
-						'tenor': 'M03',
+						'relative': 'M03',
 						'price': random.randrange(1, 100)
 					}
 				]
