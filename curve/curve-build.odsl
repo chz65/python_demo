@@ -1,9 +1,9 @@
 function build_python(id, name, base, exp)
 	input = SimpleObject()
-	input.id = id
+	input.objid = id
 	input.name = name
-	input.BASE = base
-	input.expression = func
+	input.base = base
+	input.expression = exp
 	input.ondate = #ONDATE
 
 	run DEMO_CB with input

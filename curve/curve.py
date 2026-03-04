@@ -1,4 +1,3 @@
-from dotenv import load_dotenv
 import asyncio
 import os
 import sys
@@ -6,8 +5,6 @@ from odsl import process
 from odsl import sdk
 from odsl import types
 import datetime
-
-load_dotenv()
 
 def timespread(input_curve):
     """
@@ -53,8 +50,8 @@ def timespread(input_curve):
 async def run(task):
 	odsl = sdk.ODSL()
 	odsl.setStage(os.getenv('ODSL_STAGE'))
-	user=os.getenv('user')
-	apikey=os.getenv('apikey')
+	user='alex.lynch@glencore.co.uk'
+	apikey='69a813b0d6152d543360a8ed'
 	odsl.loginWithAPIKey(user, apikey)
     # Get the task details
 	t = odsl.get('process-task', None, task)
