@@ -31,8 +31,10 @@ async def run(task):
 			await odsl_process.startPhase("LOAD")
 			dnow = date.today() - datetime.timedelta(days=1)
 			ondate = dnow.isoformat()
-			if 'ondate' in t.input and t.input['ondate']:
-				ondate = t.input['ondate']
+			input = t['input']
+			if 'ondate' in input and input['ondate']:
+				ondate = input['ondate']
+			await odsl_process.logMessage(datetime.datetime.now().isoformat() + " info Running ETL for " + ondate)
 			obj = {
 				'_id': 'AAA.PYTHON',
 				'EVENTS': [
