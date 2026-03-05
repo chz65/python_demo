@@ -54,12 +54,14 @@ async def run(task):
 				# Check the events
 				await odsl_process.startPhase("CHECK")
 				valid = len(events) > 0
+				qmessage = "No events to check"
 				for event in events:
 					if float(event['price']) < 10:
 						valid = False
+						qmessage = "Some values are below the threshold"
 				await odsl_process.logMessage(datetime.datetime.now().isoformat() + " info Check complete, valid=" + repr(valid))
 				await odsl_process.logMessage(datetime.datetime.now().isoformat() + " info Updating dataset delivery")
-				timestamp = datetime.datetime.now().isoformat() + '[UTC]'
+				timestamp = datetime.datetime.now().isoformat() + 'Z[UTC]'
 				timeline = dataset['timeline']
 				qc = dataset['qualityChecks']
 				if valid:
@@ -68,7 +70,7 @@ async def run(task):
 					qc[name] = 'valid'
 				else:
 					dataset['qualityStatus'] = 'failed'
-					timeline.append("{0} {1} {2} {3} {4}".format(timestamp, 'fatal', t['name'], 'quality', 'Quality Failed'))
+					timeline.append("{0} {1} {2} {3} {4}".format(timestamp, 'fatal', t['name'], 'quality', qmessage))
 					qc[name] = 'failed'
 				dataset['timeline'] = timeline
 				odsl.update('dataset_delivery', 'private', dataset)
