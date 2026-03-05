@@ -15,7 +15,7 @@ def addEvent(ondate, tenor, value):
     return {
 			'_id': 'DEMO-'+ondate+'-'+tenor,
 			'_type': 'VarEvent',
-			'_dsid':'ODSL.PYTHON.TRADER',
+			'_dsid':'ODSL.PYTHON.EMAILTRADER',
 			'eventtype': 'TraderPrices',
 			'eventtime': ondate,
 			'relative': tenor,
