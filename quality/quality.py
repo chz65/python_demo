@@ -6,14 +6,16 @@ from odsl import process
 from odsl import sdk
 from odsl import types
 from datetime import date
+from dotenv import load_dotenv
 import datetime
 
+load_dotenv()
 
 async def run(task):
 	odsl = sdk.ODSL()
 	odsl.setStage(os.getenv('ODSL_STAGE'))
-	user='alex.lynch@glencore.co.uk'
-	apikey='69a813b0d6152d543360a8ed'
+	user=os.environ('user')
+	apikey=os.environ('apikey')
 	odsl.loginWithAPIKey(user, apikey)
     # Get the task details
 	t = odsl.get('process-task', None, task)
@@ -24,12 +26,12 @@ async def run(task):
 		if p is not None:
 			print(p)
    
-			# Create the process message
+			# Create the process message and start the process
 			odsl_process = process.TASK(p, t)
 			await odsl_process.startProcess()
 			
 			try:
-				# Initialise the process
+				# Initialise Phase
 				await odsl_process.startPhase("INIT")
     
 				# Get the inputs
@@ -42,16 +44,10 @@ async def run(task):
 				# Get the dataset delivery
 				await odsl_process.logMessage(datetime.datetime.now().isoformat() + " info Getting dataset delivery " + dsid + ":" + ondate)
 				dataset = odsl.get('dataset_delivery', 'private', dsid + ":" + ondate)
-				#od = date.fromisoformat(ondate)
-				#odt = od + datetime.timedelta(days=1)
-				#range={'$gte':od.isoformat(), '$lt':odt.isoformat()}    
-				#filter="{'_dsid':'" + dsid + "','eventstart':" + json.dumps(range) + "}"
-				#await odsl_process.logMessage(datetime.datetime.now().isoformat() + " info Getting events " + dsid + " for " + json.dumps(range))
-				#events = odsl.list('event', 'private', {'_filter':filter,'_limit':-1})
 				await odsl_process.logMessage(datetime.datetime.now().isoformat() + " info Got " + repr(len(events)) + " events")
 				await odsl_process.endPhase("success", "Initialised Successfully")
 
-				# Check the events
+				# Check the events phase
 				await odsl_process.startPhase("CHECK")
 				valid = len(events) > 0
 				qmessage = "No events to check"
