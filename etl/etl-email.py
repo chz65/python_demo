@@ -53,6 +53,7 @@ async def run(task):
 					'EMAILEVENTS': []
 				}
 				data = input['data']
+				print(repr(data))
 				for x in data:
 					obj['EMAILEVENTS'].append(addEvent(ondate, x.tenor, x.value))
 				print("Logging message")
