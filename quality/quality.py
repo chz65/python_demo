@@ -14,8 +14,8 @@ load_dotenv()
 async def run(task):
 	odsl = sdk.ODSL()
 	odsl.setStage(os.getenv('ODSL_STAGE'))
-	user=os.environ('user')
-	apikey=os.environ('apikey')
+	user=os.getenv('user')
+	apikey=os.getenv('apikey')
 	odsl.loginWithAPIKey(user, apikey)
     # Get the task details
 	t = odsl.get('process-task', None, task)
