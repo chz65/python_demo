@@ -7,6 +7,9 @@ from odsl import sdk
 import random
 import datetime
 from datetime import date
+from dotenv import load_dotenv
+
+load_dotenv()
 
 def addEvent(ondate, tenor):
     return {
@@ -21,8 +24,8 @@ def addEvent(ondate, tenor):
 
 async def run(task):
 	odsl = sdk.ODSL()
-	user='alex.lynch@glencore.co.uk'
-	apikey='69a813b0d6152d543360a8ed'
+	user=os.getenv('user')
+	apikey=os.getenv('apikey')
 	odsl.loginWithAPIKey(user, apikey)
     # Get the task details
 	t = odsl.get('process-task', None, task)
