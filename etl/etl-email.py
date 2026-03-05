@@ -52,9 +52,9 @@ async def run(task):
 					'_id': 'AAA.PYTHON',
 					'EMAILEVENTS': []
 				}
-				data = int(input['data'])
+				data = input['data']
 				for x in data:
-					obj['EMAILEVENTS'].append(addEvent(ondate, data.tenor, data.value))
+					obj['EMAILEVENTS'].append(addEvent(ondate, x.tenor, x.value))
 				print("Logging message")
 				await odsl_process.logMessage(datetime.datetime.now().isoformat() + " info Updating " + obj['_id'])
 				print("Updating object")
